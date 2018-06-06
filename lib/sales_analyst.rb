@@ -80,7 +80,7 @@ class SalesAnalyst
     cutoff = sd + average_item_count
     merchant_items = count_items_per_merchant
     merchant_ids = reduce_hash_to_an_array_with_cutoff(cutoff, merchant_items)
-    find_by_ids(merchant_ids, @items)
+    find_by_ids(merchant_ids, @merchants)
   end
 
   def reduce_hash_to_an_array_with_cutoff(cutoff, hash)
