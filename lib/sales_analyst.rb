@@ -68,19 +68,21 @@ class SalesAnalyst
     standard_deviation(temp_mean, merchant_items.values)
   end
 
-  def merchants_with_high_item_count
-    sd = average_items_per_merchant_standard_deviation
-    average_item_count = average_items_per_merchant
-    cutoff = sd + average_item_count
-
-    merchant_items = count_items_per_merchant
-
-    merchant_ids = merchant_items.reduce([]) do |collector, (key, value)|
+  def reduce_hash_to_an_array_with_cutoff(cutoff, hash)
+    hash.reduce([]) do |collector, (key, value)|
       if value >= cutoff
         collector << key
       end
       collector
     end
+  end
+
+  def merchants_with_high_item_count
+    sd = average_items_per_merchant_standard_deviation
+    average_item_count = average_items_per_merchant
+    cutoff = sd + average_item_count
+    merchant_items = count_items_per_merchant
+    merchant_ids = reduce_hash_to_an_array_with_cutoff(cutoff, merchant_items)
     merchant_ids.map do |merchant_id|
       @merchants.find_by_id(merchant_id)
     end
@@ -130,12 +132,7 @@ class SalesAnalyst
 
     merchant_invoices = count_invoices_by_merchant
 
-    merchant_ids = merchant_invoices.reduce([]) do |collector, (key, value)|
-      if value >= cutoff
-        collector << key
-      end
-      collector
-    end
+    merchant_ids = reduce_hash_to_an_array_with_cutoff(cutoff, merchant_invoices)
     merchant_ids.map do |merchant_id|
       @merchants.find_by_id(merchant_id)
     end
