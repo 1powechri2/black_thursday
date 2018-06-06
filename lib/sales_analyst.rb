@@ -68,7 +68,6 @@ class SalesAnalyst
     standard_deviation(temp_mean, merchant_items.values)
   end
 
-<<<<<<< HEAD
   def find_by_ids(array, repository)
     array.map do |each_id|
       repository.find_by_id(each_id)
@@ -79,34 +78,17 @@ class SalesAnalyst
     sd = average_items_per_merchant_standard_deviation
     average_item_count = average_items_per_merchant
     cutoff = sd + average_item_count
-
     merchant_items = count_items_per_merchant
+    find_by_id(merchant_ids, @merchants)
+  end
 
-    merchant_ids = merchant_items.reduce([]) do |collector, (key, value)|
-=======
   def reduce_hash_to_an_array_with_cutoff(cutoff, hash)
     hash.reduce([]) do |collector, (key, value)|
->>>>>>> 108c6d77c37a30f43f810f9395eb66b21f8adf5f
       if value >= cutoff
         collector << key
       end
       collector
     end
-<<<<<<< HEAD
-    find_by_ids(merchant_ids, @merchants)
-=======
-  end
-
-  def merchants_with_high_item_count
-    sd = average_items_per_merchant_standard_deviation
-    average_item_count = average_items_per_merchant
-    cutoff = sd + average_item_count
-    merchant_items = count_items_per_merchant
-    merchant_ids = reduce_hash_to_an_array_with_cutoff(cutoff, merchant_items)
-    merchant_ids.map do |merchant_id|
-      @merchants.find_by_id(merchant_id)
-    end
->>>>>>> 108c6d77c37a30f43f810f9395eb66b21f8adf5f
   end
 
   def golden_items
@@ -150,10 +132,7 @@ class SalesAnalyst
     sd = average_invoices_per_merchant_standard_deviation
     average_invoice_count = average_invoices_per_merchant
     cutoff = average_invoice_count + 2 * sd
-
     merchant_invoices = count_invoices_by_merchant
-
-<<<<<<< HEAD
     merchant_ids = merchant_invoices.reduce([]) do |collector, (key, value)|
       if value >= cutoff
         collector << key
@@ -161,12 +140,6 @@ class SalesAnalyst
       collector
     end
     find_by_ids(merchant_ids, @merchants)
-=======
-    merchant_ids = reduce_hash_to_an_array_with_cutoff(cutoff, merchant_invoices)
-    merchant_ids.map do |merchant_id|
-      @merchants.find_by_id(merchant_id)
-    end
->>>>>>> 108c6d77c37a30f43f810f9395eb66b21f8adf5f
   end
 
   def bottom_merchants_by_invoice_count
