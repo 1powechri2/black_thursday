@@ -54,15 +54,16 @@ class SalesAnalyst
     Math.sqrt(root).round(2)
   end
 
-  def average_items_per_merchant_standard_deviation
-    merchant_items = @items.all.reduce({}) do |collector, item|
-      if collector[item.merchant_id]
-        collector[item.merchant_id] += 1
-      else
-        collector[item.merchant_id] = 1
-      end
+  def count_items_per_merchant
+    collector = Hash.new(0)
+    @items.all.reduce(collector) do |collector, item|
+      collector[item.merchant_id] += 1
       collector
     end
+  end
+
+  def average_items_per_merchant_standard_deviation
+    merchant_items = count_items_per_merchant
     temp_mean = mean(merchant_items.values)
     standard_deviation(temp_mean, merchant_items.values)
   end
@@ -72,14 +73,7 @@ class SalesAnalyst
     average_item_count = average_items_per_merchant
     cutoff = sd + average_item_count
 
-    merchant_items = @items.all.reduce({}) do |collector, item|
-      if collector[item.merchant_id]
-        collector[item.merchant_id] += 1
-      else
-        collector[item.merchant_id] = 1
-      end
-      collector
-    end
+    merchant_items = count_items_per_merchant
 
     merchant_ids = merchant_items.reduce([]) do |collector, (key, value)|
       if value >= cutoff
@@ -115,15 +109,16 @@ class SalesAnalyst
     (@invoices.all.length.to_f / total_merchants).round(2)
   end
 
-  def average_invoices_per_merchant_standard_deviation
-    merchant_invoices = @invoices.all.reduce({}) do |collector, invoice|
-      if collector[invoice.merchant_id]
-        collector[invoice.merchant_id] += 1
-      else
-        collector[invoice.merchant_id] = 1
-      end
+  def count_invoices_by_merchant
+    collector = Hash.new(0)
+    @invoices.all.reduce(collector) do |collector, invoice|
+      collector[invoice.merchant_id] += 1
       collector
     end
+  end
+
+  def average_invoices_per_merchant_standard_deviation
+    merchant_invoices = count_invoices_by_merchant
     temp_mean = mean(merchant_invoices.values)
     standard_deviation(temp_mean, merchant_invoices.values)
   end
@@ -133,14 +128,7 @@ class SalesAnalyst
     average_invoice_count = average_invoices_per_merchant
     cutoff = average_invoice_count + 2 * sd
 
-    merchant_invoices = @invoices.all.reduce({}) do |collector, invoice|
-      if collector[invoice.merchant_id]
-        collector[invoice.merchant_id] += 1
-      else
-        collector[invoice.merchant_id] = 1
-      end
-      collector
-    end
+    merchant_invoices = count_invoices_by_merchant
 
     merchant_ids = merchant_invoices.reduce([]) do |collector, (key, value)|
       if value >= cutoff
@@ -158,14 +146,7 @@ class SalesAnalyst
     average_invoice_count = average_invoices_per_merchant
     cutoff = average_invoice_count - 2 * sd
 
-    merchant_invoices = @invoices.all.reduce({}) do |collector, invoice|
-      if collector[invoice.merchant_id]
-        collector[invoice.merchant_id] += 1
-      else
-        collector[invoice.merchant_id] = 1
-      end
-      collector
-    end
+    merchant_invoices = count_invoices_by_merchant
 
     merchant_ids = merchant_invoices.reduce([]) do |collector, (key, value)|
       if value <= cutoff
