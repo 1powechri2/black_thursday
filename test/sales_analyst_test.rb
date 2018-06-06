@@ -121,7 +121,7 @@ class SalesAnalystTest < Minitest::Test
 
   def test_one_time_buyers_top_item
     actual = @sa.one_time_buyers_top_item
-    assert_equal 263396463, actual
+    assert_equal 263396463, actual.id
     assert_instance_of Item, actual
   end
 
