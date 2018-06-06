@@ -20,27 +20,27 @@ class SalesAnalystTest < Minitest::Test
   def test_it_exists
     assert_instance_of SalesAnalyst, @sa
   end
-
+  
   def test_it_has_repos
     assert_instance_of ItemsRepository, @sa.items
     assert_instance_of MerchantRepo, @sa.merchants
   end
-
+  
   def test_average_items_per_merchant
     assert_equal 2.88, @sa.average_items_per_merchant
   end
-
+  
   def test_average_item_price_for_merchant
     merchant_id = 12_334_159
     avg_price = @sa.average_item_price_for_merchant(merchant_id)
     assert_instance_of BigDecimal, avg_price
   end
-
+  
   def test_average_average_price_per_merchant
     avg_avg = @sa.average_average_price_per_merchant
     assert_instance_of BigDecimal, avg_avg
   end
-
+  
   def test_average_items_per_merchant_standard_deviation
     assert_equal 3.26, @sa.average_items_per_merchant_standard_deviation
   end
@@ -52,15 +52,15 @@ class SalesAnalystTest < Minitest::Test
   def test_golden_items
     assert_equal 5, @sa.golden_items.length
   end
-
+  
   def test_average_invoices_per_merchant
     assert_equal 10.49, @sa.average_invoices_per_merchant
   end
-
+  
   def test_average_invoices_per_merchant_standard_deviation
     assert_equal 3.29, @sa.average_invoices_per_merchant_standard_deviation
   end
-
+  
   def test_top_merchants_by_invoice_count
     assert_instance_of Merchant, @sa.top_merchants_by_invoice_count.first
     assert_equal 12, @sa.top_merchants_by_invoice_count.length
@@ -183,4 +183,5 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 999, expected.last.id
     assert_equal Customer, expected.first.class
   end
+
 end
