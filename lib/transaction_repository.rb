@@ -1,10 +1,11 @@
 require_relative 'transaction'
+require_relative 'super_repository'
 
-class TransactionRepository
+class TransactionRepository < SuperRepository
   attr_reader :all
 
   def initialize
-    @all = []
+    super
   end
 
   def load_transactions(csv)
@@ -15,11 +16,11 @@ class TransactionRepository
     end
   end
 
-  def find_by_id(id)
-    @all.find do |transaction|
-      transaction.id == id
-    end
-  end
+  # def find_by_id(id)
+  #   @all.find do |transaction|
+  #     transaction.id == id
+  #   end
+  # end
 
   def find_all_by_invoice_id(id)
     @all.select do |transaction|
@@ -54,11 +55,11 @@ class TransactionRepository
     end
   end
 
-  def delete(id)
-    @all.delete_if do |transaction|
-      transaction.id == id
-    end
-  end
+  # def delete(id)
+  #   @all.delete_if do |transaction|
+  #     transaction.id == id
+  #   end
+  # end
 
   def inspect
     "#<#{self.class} #{@invoices.size} rows>"

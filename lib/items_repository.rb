@@ -3,12 +3,12 @@ require 'bigdecimal'
 require 'pry'
 require 'time'
 
-class ItemsRepository
+class ItemsRepository < SuperRepository
   attr_reader :items_csv,
               :all
 
   def initialize
-    @all = []
+    super
   end
 
   def load_items(items_csv)
@@ -19,11 +19,11 @@ class ItemsRepository
     end
   end
 
-  def find_by_id(item_id)
-    @all.find do |item|
-      item.id == item_id
-    end
-  end
+  # def find_by_id(item_id)
+  #   @all.find do |item|
+  #     item.id == item_id
+  #   end
+  # end
 
   def find_by_name(item_name)
     @all.find do |item|
@@ -79,9 +79,9 @@ class ItemsRepository
     end
   end
 
-  def delete(id)
-    @all.delete_if do |item|
-      item.id.to_i == id
-    end
-  end
+  # def delete(id)
+  #   @all.delete_if do |item|
+  #     item.id.to_i == id
+  #   end
+  # end
 end

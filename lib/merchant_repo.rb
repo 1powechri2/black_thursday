@@ -1,11 +1,12 @@
 require_relative 'merchant'
+require_relative 'super_repository'
 
-class MerchantRepo
+class MerchantRepo < SuperRepository
   attr_reader :merchants_csv,
               :all
 
   def initialize
-    @all = []
+    super
   end
 
   def load_merchants(csv)
@@ -14,11 +15,11 @@ class MerchantRepo
     end
   end
 
-  def find_by_id(merchant_id)
-    @all.find do |merchant|
-      merchant.id.to_i == merchant_id
-    end
-  end
+  # def find_by_id(merchant_id)
+  #   @all.find do |merchant|
+  #     merchant.id.to_i == merchant_id
+  #   end
+  # end
 
   def find_by_name(merchant_name)
     @all.find do |merchant|
@@ -46,11 +47,11 @@ class MerchantRepo
     merchant.name = attributes[:name] if attributes[:name]
   end
 
-  def delete(id)
-    @all.delete_if do |merchant|
-      merchant.id.to_i == id
-    end
-  end
+  # def delete(id)
+  #   @all.delete_if do |merchant|
+  #     merchant.id.to_i == id
+  #   end
+  # end
 
   def inspect
     "#<#{self.class} #{@merchants.size} rows>"
