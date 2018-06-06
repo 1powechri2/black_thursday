@@ -1,4 +1,5 @@
 require_relative 'item'
+require_relative 'super_repository'
 require 'bigdecimal'
 require 'pry'
 require 'time'
