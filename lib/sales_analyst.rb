@@ -68,6 +68,12 @@ class SalesAnalyst
     standard_deviation(temp_mean, merchant_items.values)
   end
 
+  def find_by_ids(array, repository)
+    array.map do |each_id|
+      repository.find_by_id(each_id)
+    end
+  end
+
   def merchants_with_high_item_count
     sd = average_items_per_merchant_standard_deviation
     average_item_count = average_items_per_merchant
@@ -81,9 +87,7 @@ class SalesAnalyst
       end
       collector
     end
-    merchant_ids.map do |merchant_id|
-      @merchants.find_by_id(merchant_id)
-    end
+    find_by_ids(merchant_ids, @merchants)
   end
 
   def golden_items
@@ -136,9 +140,7 @@ class SalesAnalyst
       end
       collector
     end
-    merchant_ids.map do |merchant_id|
-      @merchants.find_by_id(merchant_id)
-    end
+    find_by_ids(merchant_ids, @merchants)
   end
 
   def bottom_merchants_by_invoice_count
@@ -154,9 +156,7 @@ class SalesAnalyst
       end
       collector
     end
-    merchant_ids.map do |merchant_id|
-      @merchants.find_by_id(merchant_id)
-    end
+    find_by_ids(merchant_ids, @merchants)
   end
 
   def top_days_by_invoice_count
@@ -273,9 +273,7 @@ class SalesAnalyst
     customers = invoices_by_customer.select do |key, value|
       value.length == 1
     end.keys
-    customers.map do |key, value|
-      @customers.find_by_id(key)
-    end
+    find_by_ids(customers, @customers)
   end
 
   def one_time_buyers_top_item
@@ -348,14 +346,13 @@ class SalesAnalyst
         @invoice_items.find_all_by_invoice_id(valid_invoice.id)
       end
     end.compact.flatten
-    items = invoice_items.map do |invoice_item|
+    invoice_items.map do |invoice_item|
       if invoice_item == nil
         nil
       else
         @items.find_by_id(invoice_item.item_id)
       end
     end
-    items
   end
 
   def highest_volume_items(customer_id)
@@ -369,10 +366,9 @@ class SalesAnalyst
     high_volume_invoice_items = invoice_items.find_all do |invoice_item|
       invoice_item.quantity == highest_number
     end
-    items = high_volume_invoice_items.map do |high_volume_invoice_item|
+    high_volume_invoice_items.map do |high_volume_invoice_item|
       @items.find_by_id(high_volume_invoice_item.item_id)
     end
-    items
   end
 
   def customers_with_unpaid_invoices
@@ -382,9 +378,6 @@ class SalesAnalyst
     unpaid_customer_ids = unpaid_invoices.map do |unpaid_invoice|
       unpaid_invoice.customer_id
     end.uniq
-    unpaid_customers = unpaid_customer_ids.map do |unpaid_customer_id|
-      @customers.find_by_id(unpaid_customer_id)
-    end
-    unpaid_customers
+    find_by_ids(unpaid_customer_ids, @customers)
   end
 end
